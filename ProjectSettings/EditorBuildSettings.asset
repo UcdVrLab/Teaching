@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/SteamVR/InteractionSystem/Samples/Interactions_Example.unity
+    guid: e3b77830391f10343929883b18f4d5ae
+  m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 2e698a16901d03347b7b609cd1225140, type: 2}
+    Unity.XR.OpenVR.Settings: {fileID: 11400000, guid: e4a59de11f0225e4796b661304d21e40, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 506dd0c1c4f1a0d4aa63f1ee28e3033d, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 7b777e4762ffca64eae2b6ab8987d7c3, type: 2}
