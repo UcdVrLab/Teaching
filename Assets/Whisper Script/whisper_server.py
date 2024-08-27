@@ -1,13 +1,21 @@
 from flask import Flask, request, jsonify
-import whisper
+from faster_whisper import WhisperModel, download_model
 import os
-import os.path
-import numpy as np
 import librosa
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-model = whisper.load_model("base.en")
+
+# Define the model path
+MODEL_PATH = "C:/Users/UCDVR/OneDrive/Documents/experiment/Whisper/model"
+MODEL_TYPE = "base.en"
+
+# Download the model if it doesn't exist
+if not os.path.exists(MODEL_PATH):
+    download_model(MODEL_TYPE, MODEL_PATH)
+
+# Load the model from the local path
+model = WhisperModel(MODEL_PATH, device="cpu", compute_type="int8")
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe_audio():
@@ -19,22 +27,25 @@ def transcribe_audio():
         return jsonify({"error": "No selected file"}), 400
 
     filename = secure_filename(file.filename)
-    temp_path = os.path.join("C:/Users/cave/Documents/Valentin Mikey projet/FYP-master/Whisper", filename)
+    temp_path = os.path.join("C:/Users/UCDVR/OneDrive/Documents/experiment/Whisper", filename)
     file.save(temp_path)
 
-    os.path.isfile(temp_path)
-    audio,sample_rate=librosa.load("C:/Users/cave/Documents/Valentin Mikey projet/FYP-master/Whisper/audio.wav")
+    if not os.path.isfile(temp_path):
+        return jsonify({"error": "File not saved correctly"}), 500
+
+    audio, sample_rate = librosa.load(temp_path)
 
     if audio.ndim != 1:
         os.remove(temp_path)
         return jsonify({"error": "Audio must be a 1D tensor"}), 400
 
-    prediction = model.transcribe(audio)
+    segments, info = model.transcribe(temp_path)
+    transcription = " ".join([segment.text for segment in segments])
 
     os.remove(temp_path)
-    print(prediction["text"])
-    
-    return jsonify({"text": prediction["text"]})
+    print(transcription)
+
+    return jsonify({"text": transcription})
 
 if __name__ == '__main__':
     app.run(debug=True)

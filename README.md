@@ -13,5 +13,3 @@ If controller is not working:
 4. Replace the triggers binding with 'triggeraction'
 5. Save the new binding
 
-# Tutorial
-## Tutorial link:  https://quilt-quartz-750.notion.site/Teaching-Assistant-e4a7d9643e104720b9caff054403b3a3

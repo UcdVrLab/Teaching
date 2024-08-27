@@ -7,7 +7,7 @@ using TMPro;
 public class Title : MonoBehaviour
 {
     public string SummaryComplete;
-    public StartLesson startLesson;
+    public string[] SummaryLines;
     public AIQuery AIQueryScritp;
     public TMP_Text TitleText;
     public TMP_Text SummaryText;
@@ -32,8 +32,8 @@ public class Title : MonoBehaviour
     }
     public void LineSeletion()
     {
-        
-        TitleText.text = startLesson.SummaryLinesListWithoutVoid[AIQueryScritp.NumberActualPart-1];
+        SummaryLines = SummaryComplete.Split('\n');
+        TitleText.text = SummaryLines[AIQueryScritp.NumberActualPart+1];
 
     }
 }

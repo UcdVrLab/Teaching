@@ -3,19 +3,14 @@ using UnityEngine.Networking;
 using System.Collections;
 using System.IO;
 using System;
-using System.Collections.Generic;
 //using UnityEditor.Scripting.Python;
 public class TextToSpeech : MonoBehaviour
 {
     private string apiKey;
     private string apiUrl;
     public AIQuery aiQuery;
-    byte[] audioData;
 
-
-    public AudioSource audioSource;
-    public List<AudioClip> audioClips = new List<AudioClip>();
-    public AudioClip currentAudio;
+    public AudioSource audioSource; 
 
 
     void Start()
@@ -32,7 +27,7 @@ public class TextToSpeech : MonoBehaviour
 
     private void ConvertResponseToSpeech(string animationTrigger, string responseWithoutTrigger)
     {
-        StartCoroutine(ConvertTextToSpeech(responseWithoutTrigger));
+        StartCoroutine(ConvertTextToSpeech(responseWithoutTrigger));//ici c'est le llm local qui prend se param pour le parler
     }
 
      private void LoadApiKey()
@@ -85,28 +80,23 @@ public class TextToSpeech : MonoBehaviour
                 string responseString = www.downloadHandler.text; //is it the text from AI ?
                 var response = JsonUtility.FromJson<TextToSpeechResponse>(responseString);
 
-                audioData = Convert.FromBase64String(response.audioContent);
+                byte[] audioData = Convert.FromBase64String(response.audioContent);
 
-                GenerateAudio(audioData,aiQuery.FictivNumberActualPart);
-                
+                PlayAudio(audioData);
             }
         }
         
     }
-  
-    private void GenerateAudio(byte[] audioData,int numberPart)
+
+    private void PlayAudio(byte[] audioData)
     {
-        string filePath = Path.Combine(Application.temporaryCachePath, "ttsOutput" + numberPart + ".wav");
+        string filePath = Path.Combine(Application.temporaryCachePath, "ttsOutput.wav");
         File.WriteAllBytes(filePath, audioData);
         StartCoroutine(LoadAndPlayAudio(filePath));
     }
 
     private IEnumerator LoadAndPlayAudio(string filePath)
     {
-        //Debug.Log("file://" + filePath);//here
-
-
-
         using (var uwr = UnityWebRequestMultimedia.GetAudioClip("file://" + filePath, AudioType.WAV))
         {
             yield return uwr.SendWebRequest();
@@ -114,9 +104,8 @@ public class TextToSpeech : MonoBehaviour
             if (uwr.result == UnityWebRequest.Result.Success)
             {
                 AudioClip clip = DownloadHandlerAudioClip.GetContent(uwr);
-                audioClips.Add(clip);
-                //audioSource.clip = audioClips[aiQuery.NumberActualPart];
-                //audioSource.Play();
+                audioSource.clip = clip;
+                audioSource.Play();
             }
             else
             {
@@ -124,18 +113,6 @@ public class TextToSpeech : MonoBehaviour
             }
         }
     }
-    public void ResetAudio()
-    {
-        audioClips.Clear();
-    }
-  
-    
-
-
-  
-
-
-
 }
 
 

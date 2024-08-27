@@ -28,7 +28,7 @@ public class WhisperServerLauncher : MonoBehaviour
     void StartWhisperService()
     {
         whisperServiceProcess = new Process();
-        whisperServiceProcess.StartInfo.FileName = @"C:/Users/cave/AppData/Local/Programs/Python/Python312/python.exe";// Will need to change this on different devices 
+        whisperServiceProcess.StartInfo.FileName = @"C:/Users/UCDVR/AppData/Local/Programs/Python/Python310/python.exe";//here python path
 
         string scriptPath = "./Assets/Whisper Script/whisper_server.py"; 
         UnityEngine.Debug.Log("launch python server");      

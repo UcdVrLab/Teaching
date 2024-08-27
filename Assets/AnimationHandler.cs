@@ -9,7 +9,6 @@ public class AnimationHandler : MonoBehaviour
 {
     [SerializeField] private AIQuery aiQuery;
     private Animator animator;
-    public GameObject SpawnPoint;
 
         void Start()
         {
@@ -62,8 +61,4 @@ public class AnimationHandler : MonoBehaviour
         "SizeSmallToLarge",
         "Speaking"
     };
-    private void Update()
-    {
-        transform.position = SpawnPoint.transform.position;
-    }
 }

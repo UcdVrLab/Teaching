@@ -25,9 +25,6 @@ namespace Samples.Whisper
         private AudioClip clip;
         public bool isRecording = false;
         private float time;
-        public string assistantMessage;
-        public string[] assistantMessageListe;
-        public int IndexAssistantMessage=0;
 
         private void Start()
         {
@@ -130,10 +127,9 @@ namespace Samples.Whisper
 
             if (response.choices != null && response.choices.Length > 0 && response.choices[0].message != null)
             {
-                assistantMessageListe[IndexAssistantMessage] = response.choices[0].message.content;
-                IndexAssistantMessage++;
-                
-                //Debug.Log("Assistant's Response: " + assistantMessageListe[IndexAssistantMessage]);
+                string assistantMessage = response.choices[0].message.content;
+                summary.text = assistantMessage;
+                Debug.Log("Assistant's Response: " + assistantMessage);
             }
             else
             {
@@ -164,16 +160,6 @@ namespace Samples.Whisper
                     StartCoroutine(EndRecording());
                 }
             }
-        }
-        public void ResetAsistantMessage()
-        {
-            for (int i = 0; i < assistantMessageListe.Length; i++)
-            {
-                assistantMessageListe[i] = "Waiting...";
-
-            }
-            IndexAssistantMessage = 0;
-
         }
     }
 }

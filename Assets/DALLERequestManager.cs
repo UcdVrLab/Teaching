@@ -9,9 +9,7 @@ using UnityEngine.UI;
 
 public class DALLERequestManager : MonoBehaviour
 {
-    public GameObject[] GameObjectImage;
-    //public Sprite canvasImage;
-    public int ImageIndex=0;
+    public Image canvasImage;
 
     string DALLE_API_KEY;
 
@@ -66,7 +64,7 @@ public class DALLERequestManager : MonoBehaviour
         };
 
         string jsonBody = JsonUtility.ToJson(requestJson);
-        //Debug.Log(jsonBody);
+        Debug.Log(jsonBody);
 
         using (UnityWebRequest www = UnityWebRequest.PostWwwForm(url, "POST"))
         {
@@ -134,13 +132,9 @@ public class DALLERequestManager : MonoBehaviour
                 Debug.LogError("Sprite is null.");
                 yield break;
             }
-            Image ImageTemp=GameObjectImage[ImageIndex].GetComponent<Image>();
-            if (ImageTemp != null)
+            if (canvasImage != null)
             {
-                //canvasImage[ImageIndex]= sprite;
-                ImageTemp.sprite = sprite;
-                ImageIndex++;
-                //Debug.Log(ImageIndex);
+                canvasImage.sprite = sprite;
             }
             else
             {
@@ -148,10 +142,6 @@ public class DALLERequestManager : MonoBehaviour
             }
         }
 
-    }
-    public void ResetImages()
-    {
-        ImageIndex = 0;
     }
 
 }
